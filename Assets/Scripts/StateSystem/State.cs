@@ -1,47 +1,48 @@
-using UnityEngine;
-
-public abstract class State
+namespace StateSystem
 {
-    public string Id { get; private set; }
-    public bool IsActive { get; private set; }
-
-    protected State(string id)
+    public abstract class State
     {
-        Id = id;
-    }
+        public string Id { get; private set; }
+        public bool IsActive { get; private set; }
 
-    public void Enable()
-    {
-        if (!IsActive)
+        protected State(string id)
         {
-            IsActive = true;
-            RegisterListeners();
-            OnEnter();
+            Id = id;
         }
-    }
 
-    public void Disable()
-    {
-        if (IsActive)
+        public void Enable()
         {
-            UnregisterListeners();
-            OnExit();
-            IsActive = false;
+            if (!IsActive)
+            {
+                IsActive = true;
+                RegisterListeners();
+                OnEnter();
+            }
         }
-    }
 
-    public void Update()
-    {
-        if (IsActive)
+        public void Disable()
         {
-            OnUpdate();
+            if (IsActive)
+            {
+                UnregisterListeners();
+                OnExit();
+                IsActive = false;
+            }
         }
+
+        public void Update()
+        {
+            if (IsActive)
+            {
+                OnUpdate();
+            }
+        }
+
+        protected abstract void OnEnter();
+        protected abstract void OnExit();
+        protected abstract void OnUpdate();
+
+        protected virtual void RegisterListeners() { }
+        protected virtual void UnregisterListeners() { }
     }
-
-    protected abstract void OnEnter();
-    protected abstract void OnExit();
-    protected abstract void OnUpdate();
-
-    protected virtual void RegisterListeners() { }
-    protected virtual void UnregisterListeners() { }
 }

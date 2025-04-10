@@ -1,12 +1,15 @@
 using System;
 
-[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public sealed class GenerateEventAttribute : Attribute
+namespace EventSystem
 {
-    public bool CanBeCancelled { get; }
-
-    public GenerateEventAttribute(bool canBeCancelled = false)
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public sealed class GenerateEventAttribute : Attribute
     {
-        CanBeCancelled = canBeCancelled;
+        public bool CanBeCancelled { get; }
+
+        public GenerateEventAttribute(bool canBeCancelled = false)
+        {
+            CanBeCancelled = canBeCancelled;
+        }
     }
 }

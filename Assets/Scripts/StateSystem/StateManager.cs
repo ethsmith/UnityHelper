@@ -1,32 +1,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateManager : MonoBehaviour
+namespace StateSystem
 {
-    private Dictionary<string, State> _states = new();
-
-    public void RegisterState(State state)
+    public class StateManager : MonoBehaviour
     {
-        _states[state.Id] = state;
-    }
+        private Dictionary<string, State> _states = new();
 
-    public void EnableState(string id)
-    {
-        if (_states.TryGetValue(id, out var state))
-            state.Enable();
-    }
-
-    public void DisableState(string id)
-    {
-        if (_states.TryGetValue(id, out var state))
-            state.Disable();
-    }
-
-    private void Update()
-    {
-        foreach (var state in _states.Values)
+        public void RegisterState(State state)
         {
-            state.Update();
+            _states[state.Id] = state;
+        }
+
+        public void EnableState(string id)
+        {
+            if (_states.TryGetValue(id, out var state))
+                state.Enable();
+        }
+
+        public void DisableState(string id)
+        {
+            if (_states.TryGetValue(id, out var state))
+                state.Disable();
+        }
+
+        private void Update()
+        {
+            foreach (var state in _states.Values)
+            {
+                state.Update();
+            }
         }
     }
 }
