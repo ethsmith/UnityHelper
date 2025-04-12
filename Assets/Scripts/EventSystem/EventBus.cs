@@ -57,8 +57,6 @@ namespace EventSystem
                 foreach (var entry in list)
                 {
                     (entry.Callback as Action<T>)?.Invoke(evt);
-                    if (evt is ICancellable c && c.IsCancelled)
-                        break;
                 }
             }
         }
