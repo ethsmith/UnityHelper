@@ -32,12 +32,12 @@ namespace EventSystem
             _listeners[type] = _listeners[type].OrderByDescending(e => e.Priority).ToList();
         }
 
-        public static void StopListening<T>(Action<T> callback) where T : Event
+        public static void StopListening<T>(object owner, Action<T> callback) where T : Event
         {
             var type = typeof(T);
             if (_listeners.TryGetValue(type, out var list))
             {
-                list.RemoveAll(e => e.Callback.Equals(callback));
+                list.RemoveAll(e => e.Callback.Equals(callback) && e.Owner == owner);
             }
         }
 

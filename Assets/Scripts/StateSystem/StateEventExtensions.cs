@@ -11,7 +11,7 @@ namespace StateSystem
 
         public static void StopListening<T>(this State state, System.Action<T> callback) where T : Event
         {
-            EventBus.StopListening(callback);
+            EventBus.StopListening(state, callback);
         }
 
         public static void StopListeningToAll(this State state)
