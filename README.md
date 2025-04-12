@@ -9,6 +9,3 @@
 6. Select the .unitypackage you downloaded
 7. Import everything
 8. Done!
-
-#### P.S. The package comes with a .dll file that allows you to use [GenerateEvent(canBeCancelled: true/false)] to auto generate event code
-This code for the code generator is not on GitHub because it is just a dev quality of life tool and doesn't need to be extended on by others. 
