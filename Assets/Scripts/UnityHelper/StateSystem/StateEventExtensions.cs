@@ -1,7 +1,7 @@
 using System;
-using EventSystem;
+using UnityHelper.EventSystem;
 
-namespace StateSystem
+namespace UnityHelper.StateSystem
 {
     public static class StateEventExtensions
     {

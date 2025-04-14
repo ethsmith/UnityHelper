@@ -6,7 +6,7 @@ using UnityEngine;
 // Required for Instructions
 using PointerType = Mono.Cecil.PointerType;
 
-namespace ModSystem
+namespace UnityHelper.ModSystem
 {
     public class ModScanner
     {

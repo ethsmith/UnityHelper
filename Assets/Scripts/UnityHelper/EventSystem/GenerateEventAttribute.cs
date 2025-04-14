@@ -1,6 +1,6 @@
 using System;
 
-namespace EventSystem
+namespace UnityHelper.EventSystem
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public sealed class GenerateEventAttribute : Attribute

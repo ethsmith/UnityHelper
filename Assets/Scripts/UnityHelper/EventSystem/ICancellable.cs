@@ -1,4 +1,4 @@
-namespace EventSystem
+namespace UnityHelper.EventSystem
 {
     public interface ICancellable
     {

@@ -1,4 +1,4 @@
-namespace ModSystem
+namespace UnityHelper.ModSystem
 {
     public interface IMod
     {
@@ -6,5 +6,11 @@ namespace ModSystem
         string ModVersion();
         string ModAuthor();
         bool IsMpCompatible();
+
+        void Start();
+        
+        void Stop();
+        
+        void Update();
     }
 }

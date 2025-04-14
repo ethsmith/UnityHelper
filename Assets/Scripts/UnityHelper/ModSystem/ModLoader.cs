@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 
-namespace ModSystem
+namespace UnityHelper.ModSystem
 {
     public class ModLoader
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace StateSystem
+namespace UnityHelper.StateSystem
 {
     public class StateManager : MonoBehaviour
     {

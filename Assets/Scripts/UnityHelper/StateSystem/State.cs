@@ -1,4 +1,4 @@
-namespace StateSystem
+namespace UnityHelper.StateSystem
 {
     public abstract class State
     {

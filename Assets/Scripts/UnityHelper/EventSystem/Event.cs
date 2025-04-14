@@ -1,4 +1,4 @@
-namespace EventSystem
+namespace UnityHelper.EventSystem
 {
     public abstract class Event
     {
