@@ -22,6 +22,11 @@ namespace ModSystem
         {
             var modPath = Path.Combine(Application.dataPath, "../Mods");
 
+            if (!Directory.Exists(modPath))
+            {
+                Directory.CreateDirectory(modPath);
+            }
+
             foreach (var dll in Directory.GetFiles(modPath, "*.dll"))
             {
                 if (!ModScanner.IsModSafe(dll))
