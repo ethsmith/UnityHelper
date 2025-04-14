@@ -6,20 +6,6 @@ namespace EventSystem
 {
     public static class EventBus
     {
-        private class ListenerEntry
-        {
-            public Delegate Callback;
-            public int Priority;
-            public object Owner;
-
-            public ListenerEntry(Delegate callback, int priority, object owner)
-            {
-                Callback = callback;
-                Priority = priority;
-                Owner = owner;
-            }
-        }
-
         private static readonly Dictionary<Type, List<ListenerEntry>> _listeners = new();
 
         public static void ListenTo<T>(object owner, Action<T> callback, int priority = 0) where T : Event
@@ -36,28 +22,33 @@ namespace EventSystem
         {
             var type = typeof(T);
             if (_listeners.TryGetValue(type, out var list))
-            {
                 list.RemoveAll(e => e.Callback.Equals(callback) && e.Owner == owner);
-            }
         }
 
         public static void StopListeningToAll(object owner)
         {
-            foreach (var list in _listeners.Values)
-            {
-                list.RemoveAll(e => e.Owner == owner);
-            }
+            foreach (var list in _listeners.Values) list.RemoveAll(e => e.Owner == owner);
         }
 
         public static void Fire<T>(T evt) where T : Event
         {
             var type = typeof(T);
             if (_listeners.TryGetValue(type, out var list))
-            {
                 foreach (var entry in list)
-                {
                     (entry.Callback as Action<T>)?.Invoke(evt);
-                }
+        }
+
+        private class ListenerEntry
+        {
+            public readonly Delegate Callback;
+            public readonly object Owner;
+            public readonly int Priority;
+
+            public ListenerEntry(Delegate callback, int priority, object owner)
+            {
+                Callback = callback;
+                Priority = priority;
+                Owner = owner;
             }
         }
     }

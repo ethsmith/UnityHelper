@@ -2,30 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Security.AccessControl;
-using Mono.Cecil;
 using UnityEngine;
 
 namespace ModSystem
 {
     public class ModLoader
     {
-        public Dictionary<string, IMod> LoadedMods { get; } = new();
-
         public ModLoader(bool loadNow = false)
         {
             if (!loadNow) return;
             LoadMods();
         }
-        
+
+        public Dictionary<string, IMod> LoadedMods { get; } = new();
+
         public void LoadMods()
         {
             var modPath = Path.Combine(Application.dataPath, "../Mods");
 
-            if (!Directory.Exists(modPath))
-            {
-                Directory.CreateDirectory(modPath);
-            }
+            if (!Directory.Exists(modPath)) Directory.CreateDirectory(modPath);
 
             foreach (var dll in Directory.GetFiles(modPath, "*.dll"))
             {
@@ -34,7 +29,7 @@ namespace ModSystem
                     Debug.LogWarning($"Mod {Path.GetFileName(dll)} blocked due to unsafe usage.");
                     continue;
                 }
-                
+
                 var assembly = Assembly.LoadFile(dll);
                 foreach (var type in assembly.GetTypes())
                 {

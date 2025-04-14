@@ -2,13 +2,13 @@ namespace StateSystem
 {
     public abstract class State
     {
-        public string Id { get; private set; }
-        public bool IsActive { get; private set; }
-
         protected State(string id)
         {
             Id = id;
         }
+
+        public string Id { get; private set; }
+        public bool IsActive { get; private set; }
 
         public void Enable()
         {
@@ -32,17 +32,19 @@ namespace StateSystem
 
         public void Update()
         {
-            if (IsActive)
-            {
-                OnUpdate();
-            }
+            if (IsActive) OnUpdate();
         }
 
         protected abstract void OnEnter();
         protected abstract void OnExit();
         protected abstract void OnUpdate();
 
-        protected virtual void RegisterListeners() { }
-        protected virtual void UnregisterListeners() { }
+        protected virtual void RegisterListeners()
+        {
+        }
+
+        protected virtual void UnregisterListeners()
+        {
+        }
     }
 }

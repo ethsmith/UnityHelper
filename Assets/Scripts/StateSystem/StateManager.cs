@@ -5,7 +5,12 @@ namespace StateSystem
 {
     public class StateManager : MonoBehaviour
     {
-        private Dictionary<string, State> _states = new();
+        private readonly Dictionary<string, State> _states = new();
+
+        private void Update()
+        {
+            foreach (var state in _states.Values) state.Update();
+        }
 
         public void RegisterState(State state)
         {
@@ -22,14 +27,6 @@ namespace StateSystem
         {
             if (_states.TryGetValue(id, out var state))
                 state.Disable();
-        }
-
-        private void Update()
-        {
-            foreach (var state in _states.Values)
-            {
-                state.Update();
-            }
         }
     }
 }
