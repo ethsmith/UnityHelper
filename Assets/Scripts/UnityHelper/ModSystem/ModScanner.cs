@@ -10,63 +10,6 @@ namespace UnityHelper.ModSystem
 {
     public class ModScanner
     {
-        // Instance field to store the setting
-        private readonly bool _banAllInNamespace;
-
-        // --- Dangerous Types ---
-        // Use StartsWith for namespaces (include trailing '.' if needed)
-        // Use exact full names for specific classes
-        private static readonly string[] DangerousTypes =
-        {
-            // Namespaces (match anything within)
-            "System.IO.",
-            "System.Net.",
-            "System.Reflection.Emit.",
-            "System.Runtime.InteropServices.",
-            "System.Security.AccessControl.",
-            "System.Management.",
-            "System.IO.IsolatedStorage.",
-
-            // Specific Classes (match exactly)
-            "System.Diagnostics.Process",
-            "System.Reflection.Assembly" // Loading/interacting with assemblies directly
-            // Add other specific dangerous classes here if needed
-        };
-
-        // --- Dangerous Methods ---
-        // These are checked *in combination* with DangerousTypes
-        private static readonly string[] DangerousMethods =
-        {
-            // IO Methods
-            "Delete", "Move", "CreateDirectory", "Copy", "AppendAllText", "WriteAllBytes", "WriteAllText",
-            "SetAccessControl", "AddAccessRule", "RemoveAccessRule", "SetAccessRule", "GetAccessControl",
-            "Open", "Create", // FileStream constructors are often just ".ctor", so check common factory methods too
-
-            // Process Methods
-            "Start", "Kill", "GetProcesses",
-
-            // Reflection/Assembly Methods
-            "Load", "LoadFrom", "LoadFile", "GetExecutingAssembly", "Invoke", // Check context carefully
-            "CreateInstance", // System.Activator
-
-            // Networking Methods
-            "Connect", "Bind", "Listen", "Send", "Receive", "GetResponse", "DownloadFile",
-            "UploadFile", // Check common methods on Socket, TcpClient, WebClient etc.
-
-            // Interop Methods
-            "GetDelegateForFunctionPointer", "PtrToStructure", "StructureToPtr",
-
-            // Add other specific dangerous method names
-            ".ctor" // Check constructors of dangerous types explicitly if needed
-        };
-
-
-        // Constructor
-        public ModScanner(bool banAllInNamespace = false)
-        {
-            _banAllInNamespace = banAllInNamespace;
-        }
-
         public bool IsModSafe(string dllPath)
         {
             try
@@ -152,7 +95,7 @@ namespace UnityHelper.ModSystem
                                     if (typeIsDangerous)
                                     {
                                         // If banning all in namespace is enabled, and the type is dangerous, fail immediately.
-                                        if (_banAllInNamespace)
+                                        if (UnityHelperAddon.UnityHelper.BanAllNamespaces())
                                         {
                                             Debug.LogWarning($"[SECURITY] Dangerous type '{methodRef.DeclaringType.FullName}' used (namespace ban active). Banned method call: {methodRef.FullName}");
                                             return false;
@@ -161,7 +104,7 @@ namespace UnityHelper.ModSystem
                                         else
                                         {
                                             string methodName = methodRef.Name;
-                                            bool methodIsDangerous = DangerousMethods.Any(dangerousMethodName => methodName == dangerousMethodName);
+                                            bool methodIsDangerous = UnityHelperAddon.UnityHelper.DangerousMethods().Any(dangerousMethodName => methodName == dangerousMethodName);
                                             if (methodIsDangerous)
                                             {
                                                 Debug.LogWarning($"[SECURITY] Dangerous method call detected in '{method.FullName}': Call to {methodRef.FullName} (Type and Method match)");
@@ -252,7 +195,7 @@ namespace UnityHelper.ModSystem
             fullName = fullName.Replace("&", ""); // Remove by-ref marker
 
             // Inside IsDangerousType, before the final return
-            var isMatch = DangerousTypes.Any(dangerous =>
+            var isMatch = UnityHelperAddon.UnityHelper.DangerousTypes().Any(dangerous =>
                 fullName.Equals(dangerous, StringComparison.Ordinal) ||
                 (dangerous.EndsWith(".") && fullName.StartsWith(dangerous, StringComparison.Ordinal))
             );
@@ -279,7 +222,7 @@ namespace UnityHelper.ModSystem
             }
 
             string methodName = methodRef.Name;
-            bool methodIsDangerous = DangerousMethods.Any(dangerousMethodName => methodName == dangerousMethodName); 
+            bool methodIsDangerous = UnityHelperAddon.UnityHelper.DangerousMethods().Any(dangerousMethodName => methodName == dangerousMethodName); 
             Debug.Log($"[ScannerDebug] IsDangerousMethodCall Check: MethodName='{methodName}', NameInList={methodIsDangerous}");
 
             return methodIsDangerous;

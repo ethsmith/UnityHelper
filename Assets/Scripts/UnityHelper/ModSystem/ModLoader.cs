@@ -10,10 +10,9 @@ namespace UnityHelper.ModSystem
     {
         private readonly ModScanner _modScanner;
         
-        public ModLoader(bool loadNow = false, ModScanner scanner = null)
+        public ModLoader()
         {
-            _modScanner = scanner ?? new ModScanner(true);
-            if (!loadNow) return;
+            _modScanner = new ModScanner();
             LoadMods();
         }
 
