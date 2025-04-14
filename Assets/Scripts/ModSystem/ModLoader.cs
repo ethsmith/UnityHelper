@@ -8,8 +8,11 @@ namespace ModSystem
 {
     public class ModLoader
     {
-        public ModLoader(bool loadNow = false)
+        private readonly ModScanner _modScanner;
+        
+        public ModLoader(bool loadNow = false, ModScanner scanner = null)
         {
+            _modScanner = scanner ?? new ModScanner(true);
             if (!loadNow) return;
             LoadMods();
         }
@@ -24,7 +27,7 @@ namespace ModSystem
 
             foreach (var dll in Directory.GetFiles(modPath, "*.dll"))
             {
-                if (!ModScanner.IsModSafe(dll))
+                if (!_modScanner.IsModSafe(dll))
                 {
                     Debug.LogWarning($"Mod {Path.GetFileName(dll)} blocked due to unsafe usage.");
                     continue;
