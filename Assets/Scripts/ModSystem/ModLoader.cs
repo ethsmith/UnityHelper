@@ -40,8 +40,8 @@ namespace ModSystem
                 {
                     if (!typeof(IMod).IsAssignableFrom(type) || type.IsInterface || type.IsAbstract) continue;
                     var mod = (IMod)Activator.CreateInstance(type);
-                    LoadedMods.Add(mod.ModId, mod);
-                    Debug.Log($"Mod loaded: {mod.ModId}");
+                    LoadedMods.Add(mod.ModId(), mod);
+                    Debug.Log($"Mod loaded: {mod.ModId()}");
                 }
             }
         }
